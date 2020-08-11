@@ -1,9 +1,18 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
 from .models import Pass
 from .serializers import PassSerializer
 
+
+class PendingPassViewSet(viewsets.ModelViewSet):
+    queryset = Pass.objects.filter(status='pending')
+    serializer_class = PassSerializer
+
+
+class OutstandingPassViewSet(viewsets.ModelViewSet):
+    queryset = Pass.objects.filter(status='issued')
+    serializer_class = PassSerializer
 
 @api_view(['GET','PUT'])
 def get_update_pass(request, pk):
